@@ -1,0 +1,8 @@
+### intellij IDEA ###
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+production/
+
