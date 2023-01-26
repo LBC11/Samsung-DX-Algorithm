@@ -4,7 +4,6 @@ import java.util.HashSet;
 public class No_1 {
 
     /*
-    1. 문제
     민석이는 불면증에 걸렸다. 그래서 잠이 안 올 때의 민간요법 중 하나인 양 세기를 하려고 한다.
     민석이는 1번 양부터 순서대로 세는 것이 재미없을 것 같아서 N의 배수 번호인 양을 세기로 하였다.
     즉, 첫 번째에는 N번 양을 세고, 두 번째에는 2N번 양, … , k번째에는 kN번 양을 센다.
@@ -72,6 +71,5 @@ public class No_1 {
         bw.flush();
         br.close();
         bw.close();
-
     }
 }
