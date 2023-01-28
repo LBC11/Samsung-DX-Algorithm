@@ -1,0 +1,2 @@
+## 표준 입출력 방법
+System.setIn(new java.io.FileInputStream("sample_input.txt");
