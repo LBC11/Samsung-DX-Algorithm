@@ -1,6 +1,9 @@
 import java.io.*;
 import java.util.StringTokenizer;
 
+/*
+정수 N, M 이 주어질 때, M의 이진수 표현의 마지막 N 비트가 모두 1로 켜져 있는지 아닌지를 판별하여 출력하라.
+ */
 public class No_2 {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -9,7 +12,13 @@ public class No_2 {
 
     static String solution(int n, int m) {
 
-        return " ";
+        for(int i=n-1; i>=0; i--) {
+            if(((m & (1<<i)) >> i) != 1) {
+                return "OFF";
+            }
+        }
+
+        return "ON";
     }
 
     public static void main(String[] args) throws IOException {

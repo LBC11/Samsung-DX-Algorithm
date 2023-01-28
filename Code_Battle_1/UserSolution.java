@@ -120,6 +120,8 @@ class UserSolution {
         changes = new int[6];
     }
 
+
+
     public void hire(int mID, int mTeam, int mScore) {
 
         // LinkedList 에서 정보 추가
