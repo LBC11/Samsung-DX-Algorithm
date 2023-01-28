@@ -105,14 +105,14 @@ class UserSolution {
      */
 
     private static LinkedList<Integer>[] teams;
-   private static int[] scores;
+    private static int[] scores;
     private static int[] changes;
 
     public void init() {
 
         // memory 할당
         teams = new LinkedList[6];
-        for(int i=1; i<6; i++) {
+        for (int i = 1; i < 6; i++) {
             teams[i] = new LinkedList<>();
         }
 
@@ -132,8 +132,8 @@ class UserSolution {
     public void fire(int mID) {
 
         // LinkedList 에서 정보 삭제
-        for (int i=1; i<6; i++) {
-            if(teams[i].remove(Integer.valueOf(mID))) {
+        for (int i = 1; i < 6; i++) {
+            if (teams[i].remove(Integer.valueOf(mID))) {
                 break;
             }
         }
@@ -171,20 +171,20 @@ class UserSolution {
             int score = scores[i] + mChangeScore;
 
             // 평판 점수의 최댓값은 5이다.
-            if(score >= 5) scores[i] = 5;
+            if (score >= 5) scores[i] = 5;
 
-            // 평판 점수의 최솟값은 5이다.
-            else if(score <= 1) scores[i] = 1;
+                // 평판 점수의 최솟값은 5이다.
+            else if (score <= 1) scores[i] = 1;
 
-            // 그 사이의 값인 경우
+                // 그 사이의 값인 경우
             else scores[i] = score;
 
             // 역순으로 정렬했기 때문에 현재의 mID 가
             // 가장 큰 값임이 보장된다.
-            if(score == 5) return i;
+            if (score == 5) return i;
 
             // 평판 점수가 더 높은 경우
-            if(score > bestScore) {
+            if (score > bestScore) {
 
                 // ID, Score 둘 다 갱신
                 bestID = i;
