@@ -13,11 +13,15 @@ public class No_2 {
     static String solution(int n, int m) {
 
         for(int i=n-1; i>=0; i--) {
+
+            // m을 2진수로 표현했을 때 n-1번째 비트가 1인지 확인
+            // 아니면 OFF return
             if(((m & (1<<i)) >> i) != 1) {
                 return "OFF";
             }
         }
 
+        // n개의 비트가 모두 1일 경우
         return "ON";
     }
 
