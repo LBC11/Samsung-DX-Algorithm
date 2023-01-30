@@ -1,0 +1,39 @@
+## Tree
+- 비선형 구조로 원소들 간에 1:n 관계를 가지는 자료구조
+1. 원소들 간에 계층관계를 가지는 계층형 자료구조
+2. 상위 원소에서 하위 원소로 내려가면서 확장되는 Tree 모양의 구조
+
+### Tree의 특성
+1. 한 개 이상의 node로 이루어진 유한 집합
+2. 분리집합 T1,..., Tn 은 각각 하나의 Tree(재귀적 의미)가 되며 Root의 SubTree라고 합니다.
+
+### Tree의 구성요소
+- Node(노드): Tree의 원소
+- Edge(엣지): 각 노드를 연결하는 선
+
+### Tree 용어 정리
+1. parent node / child node: 연결된 두 노드 중 위에 있는 노드를 부모 노드, 아래에 있는 노드를 자식 노드라고 합니다.
+2. Binary Search Tree: 각 노드가 최대 2개의 자식 노드만 갖도록 제한한 트리입니다. 2개의 자식 노드를 각각 left child, right child라고 부릅니다.
+3. ancestor / descendent: 노드 V에서 부모 노드로만 계속 이동해서 노드 U로 갈 수 있다면 U는 V의 조상이고, V는 U의 자손입니다.
+4. root node: 부모 노드가 없는 노드입니다. 트리 가장 위에 위치합니다.
+5. leaf node: 자식 노드가 없는 노드입니다.
+6. depth of a node: 루트 노드로부터 해당 노드까지 이동하기 위해 거쳐야 하는 간선의 수 입니다. 루트 노드의 깊이는 0입니다. level이라고 부르기도 하며 루트 노드의 깊이를 1이라고 하는 경우도 있습니다.
+7. height of a node: 해당 노드부터 가장 먼 리프 노드까지 이동하기 위해 거쳐야 하는 간선의 수입니다. 리프 노드의 높이는 0입니다. 깊이와 마찬가지로 리프 노드의 높이를 1이라고 하는 경우도 있습니다. 
+8. subtree: 어떤 노드와 부모 노드간의 연결을 끊으면 해당 노드를 루트 노드로 하는 새로운 트리가 만들어집니다. 이것을 서브트리라고 합니다.
+9. size of tree: 트리의 크기는 노드의 개수와 같습니다.
+10. 차수: 노드에 연결된 자식 노드의 수
+
+### Binary Tree 종류
+- Full Binary Tree(포화 이진 트리): 모드 레벨에 노드가 포화상태로 차 있는 Binary Tree
+- Complete Binary Tree(완전 이진 트리): Full Binary Tree의 노드 번호 1~n까지 빈 자리가 없는 Binary Tree
+- Skewed Binary Tree(편향 이진 트리): 높이 h에 대한 최소 개수의 노드를 가지면서 한쪽 방향의 자식 노드만을 가진 Binary Tree, 왼쪽과 오른쪽이 있다.
+
+### Traversal(순회)
+1. 전위 순회(Preorder Traversal)
+    - VLR(root, left, right 순으로 방문)
+
+2. 중위 순회(Inorder Traversal)
+    - LVR(left, root, right 순으로 방문)
+3. 후위 순회(Postorder Traversal)
+    - LRV(left, right, root 순으로 방문)
+    
