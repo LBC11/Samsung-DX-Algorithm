@@ -1,3 +1,5 @@
+package 비트연산;
+
 import java.io.*;
 import java.util.StringTokenizer;
 

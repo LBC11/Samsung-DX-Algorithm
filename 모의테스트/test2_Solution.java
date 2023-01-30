@@ -1,4 +1,4 @@
-package Samsung;
+package 모의테스트;
 
 import java.io.*;
 import java.util.StringTokenizer;
