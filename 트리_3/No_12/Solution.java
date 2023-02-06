@@ -6,14 +6,14 @@ public class Solution {
 
     private static UserSolution usersolution = new UserSolution();
 
-    private final static int CMD_MKDIR		= 1;
-    private final static int CMD_RM			= 2;
-    private final static int CMD_CP			= 3;
-    private final static int CMD_MV			= 4;
-    private final static int CMD_FIND		= 5;
+    private final static int CMD_MKDIR = 1;
+    private final static int CMD_RM = 2;
+    private final static int CMD_CP = 3;
+    private final static int CMD_MV = 4;
+    private final static int CMD_FIND = 5;
 
-    private final static int NAME_MAXLEN	= 6;
-    private final static int PATH_MAXLEN	= 1999;
+    private final static int NAME_MAXLEN = 6;
+    private final static int PATH_MAXLEN = 1999;
 
 
     private static boolean run(Scanner sc, int m) throws Exception {
@@ -38,15 +38,13 @@ public class Solution {
                 name[inputStr.length() - 1] = '\0';
 
                 usersolution.cmd_mkdir(path1, name);
-            }
-            else if (cmd == CMD_RM) {
+            } else if (cmd == CMD_RM) {
                 inputStr = sc.next() + " ";
                 path1 = inputStr.toCharArray();
                 path1[inputStr.length() - 1] = '\0';
 
                 usersolution.cmd_rm(path1);
-            }
-            else if (cmd == CMD_CP) {
+            } else if (cmd == CMD_CP) {
                 inputStr = sc.next() + " ";
                 path1 = inputStr.toCharArray();
                 path1[inputStr.length() - 1] = '\0';
@@ -55,8 +53,7 @@ public class Solution {
                 path2[inputStr.length() - 1] = '\0';
 
                 usersolution.cmd_cp(path1, path2);
-            }
-            else if (cmd == CMD_MV) {
+            } else if (cmd == CMD_MV) {
                 inputStr = sc.next() + " ";
                 path1 = inputStr.toCharArray();
                 path1[inputStr.length() - 1] = '\0';
@@ -65,8 +62,7 @@ public class Solution {
                 path2[inputStr.length() - 1] = '\0';
 
                 usersolution.cmd_mv(path1, path2);
-            }
-            else {
+            } else {
                 int ret;
                 int answer;
 
@@ -89,7 +85,7 @@ public class Solution {
         int test, T;
         int n, m;
 
-         System.setIn(new java.io.FileInputStream("C:/Users/LBC/Desktop/samsung_dx/트리_3/No_12/sample_sample_input.txt"));
+        System.setIn(new java.io.FileInputStream("C:/Users/LBC/Desktop/samsung_dx/트리_3/No_12/sample_sample_input.txt"));
 
         Scanner sc = new Scanner(System.in);
 
@@ -104,8 +100,7 @@ public class Solution {
 
             if (run(sc, m)) {
                 System.out.println("#" + test + " 100");
-            }
-            else {
+            } else {
                 System.out.println("#" + test + " 0");
             }
         }
