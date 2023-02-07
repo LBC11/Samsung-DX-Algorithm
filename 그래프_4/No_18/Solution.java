@@ -1,11 +1,9 @@
 package 그래프_4.No_18;
 
-import java.io.*;
 import java.util.StringTokenizer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 public class Solution {
 
