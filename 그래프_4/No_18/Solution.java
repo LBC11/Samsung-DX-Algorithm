@@ -74,6 +74,8 @@ public class Solution {
         String str;
         StringTokenizer st;
 
+        System.setIn(new java.io.FileInputStream("C:/Users/LBC/Desktop/samsung_dx/그래프_4/No_18/dfs_input.txt"));
+
         br = new BufferedReader(new InputStreamReader(System.in));
         str = br.readLine();
         TC = Integer.parseInt(str);
