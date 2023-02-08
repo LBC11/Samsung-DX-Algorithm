@@ -1,4 +1,4 @@
-package Code_Battle_2;
+package Pro.No_2;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -94,7 +94,7 @@ class Solution {
 
     public static void main(String[] args) throws Exception {
         int T, MARK;
-        System.setIn(new java.io.FileInputStream("C:/Users/LBC/Desktop/samsung_dx/Code_Battle_2/sample_input.txt"));
+        System.setIn(new java.io.FileInputStream("C:/Users/LBC/Desktop/samsung_dx/Pro.Code_Battle_2/sample_input.txt"));
         sc = new Scanner(System.in);
 
         T = sc.nextInt();

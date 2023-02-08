@@ -1,4 +1,4 @@
-package Code_Battle_2;
+package Pro.No_2;
 
 import java.util.HashMap;
 

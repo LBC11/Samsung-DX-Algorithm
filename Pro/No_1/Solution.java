@@ -1,4 +1,4 @@
-package Code_Battle_1;
+package Pro.No_1;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -78,7 +78,7 @@ class Solution {
     public static void main(String[] args) throws Exception {
         int TC, MARK;
 
-        System.setIn(new java.io.FileInputStream("C:/Users/LBC/Downloads/sample_25_input.txt"));
+        System.setIn(new java.io.FileInputStream("C:/Users/LBC/Desktop/samsung_dx/Pro.Code_Battle_1/sample_25_input.txt"));
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
