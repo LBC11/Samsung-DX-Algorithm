@@ -15,3 +15,4 @@ class UserSolution {
         return -1;
     }
 }
+
