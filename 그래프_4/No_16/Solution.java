@@ -58,7 +58,7 @@ public class Solution {
     static int find(int x) {
 
         // 경로 압축을 위해서
-        if(parent[x] == x) return x;
+        if (parent[x] == x) return x;
 
         return parent[x] = find(parent[x]);
     }
@@ -69,14 +69,14 @@ public class Solution {
         int p_a = find(a);
         int p_b = find(b);
 
-        if(p_a > p_b) parent[p_a] = p_b;
+        if (p_a > p_b) parent[p_a] = p_b;
         else parent[p_b] = p_a;
     }
 
     public static void main(String[] args) throws IOException {
 
         int T = Integer.parseInt(br.readLine());
-        for(int t=1; t<=T; t++) {
+        for (int t = 1; t <= T; t++) {
 
             int n = Integer.parseInt(br.readLine());
 
@@ -85,7 +85,7 @@ public class Solution {
             parent = new int[n];
 
             st = new StringTokenizer(br.readLine());
-            for(int i=0; i<n; i++) {
+            for (int i = 0; i < n; i++) {
 
                 // x value
                 x[i] = Integer.parseInt(st.nextToken());
@@ -96,7 +96,7 @@ public class Solution {
 
             st = new StringTokenizer(br.readLine());
 
-            for(int i=0; i<n; i++) {
+            for (int i = 0; i < n; i++) {
 
                 // y value
                 y[i] = Integer.parseInt(st.nextToken());
@@ -107,8 +107,8 @@ public class Solution {
             edges = new LinkedList<>();
 
             // edges 계산
-            for(int i=0; i<n; i++) {
-                for(int j=i+1; j<n; j++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
 
                     long distance = (long) (Math.pow(x[i] - x[j], 2) + Math.pow(y[i] - y[j], 2));
                     edges.add(new Edge(i, j, distance));
@@ -125,7 +125,7 @@ public class Solution {
                 int p_e = find(edge.end);
 
                 // parent 가 다르다는 애기는 아직 서로 연결이 되어 있지 않다는 의미
-                if(p_s != p_e) {
+                if (p_s != p_e) {
                     union(edge.start, edge.end);
                     result += edge.distance;
                 }
