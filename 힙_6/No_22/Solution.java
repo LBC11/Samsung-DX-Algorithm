@@ -13,23 +13,16 @@ public class Solution {
     private static BufferedReader br;
 
     private static int[] input = new int[MAX_INPUT];
-    private static int[] temp = new int[MAX_INPUT * 4];
-
     private static long seed = 13410;
-
-    private static int a = 0;
 
     private static long pseudoRand() {
         seed = (seed * 214013 + 2531011) & 0xffffffffL;
-        return (seed >> 11) % MAX_NUM;
+        return (seed>>11) % MAX_NUM;
     }
 
     private static void makeInput(int inputLen) {
-        for (int i = 0; i < inputLen; i++) {
-            int t = (int) (pseudoRand());
-            input[i] = t;
-            temp[a] = t;
-            System.out.println(a +"번째 input: "+temp[a++]);
+        for(int i = 0; i < inputLen; i++) {
+            input[i] = (int)(pseudoRand());
         }
     }
 
@@ -42,35 +35,29 @@ public class Solution {
         str = br.readLine();
         N = Integer.parseInt(str);
 
-        for (int i = 0; i < N; i++) {
+        for(int i = 0; i < N; i++) {
             str = br.readLine();
             userNum = Integer.parseInt(str);
             makeInput(userNum);
 
-            for (int j = 0; j < userNum; j++) {
+            for(int j = 0; j < userNum; j++) {
                 usersolution.addUser(uID++, input[j]);
             }
             ret = usersolution.getTop10(result);
 
-            System.out.println("ret: "+ret);
-
             sum = 0;
-            for (int j = 0; j < ret; j++) {
-                System.out.println("result = " + result[j]+" temp: "+temp[result[j]]);
+            for(int j = 0; j < ret; j++) {
                 sum += result[j];
             }
 
-            System.out.println("sum: "+sum);
-
             str = br.readLine();
             ans = Integer.parseInt(str);
-            if (sum != ans) {
+            if(sum != ans) {
                 score = 0;
             }
         }
         return score;
     }
-
     public static void main(String[] args) throws Exception {
         int TC;
         //System.setIn(new java.io.FileInputStream("res/sample_input.txt"));
@@ -80,16 +67,8 @@ public class Solution {
         TC = Integer.parseInt(str);
 
         for (int tc = 1; tc <= TC; tc++) {
-            a=0;
             usersolution.init();
             System.out.println("#" + tc + " " + run());
-
-            if(tc == 3) {
-                System.out.println(temp[440]);
-                System.out.println(temp[20909]);
-            }
-
-
         }
     }
 }
