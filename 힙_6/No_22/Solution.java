@@ -1,23 +1,95 @@
 package 힙_6.No_22;
 
-import java.io.*;
-import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Solution {
 
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static StringBuffer sb = new StringBuffer();
+    private final static int MAX_INPUT = 100000;
+    private final static int MAX_NUM = 30000;
 
-    static StringTokenizer st;
+    private final static UserSolution usersolution = new UserSolution();
 
-    public static void main(String[] args) throws IOException {
+    private static BufferedReader br;
+
+    private static int[] input = new int[MAX_INPUT];
+    private static int[] temp = new int[MAX_INPUT * 4];
+
+    private static long seed = 13410;
+
+    private static int a = 0;
+
+    private static long pseudoRand() {
+        seed = (seed * 214013 + 2531011) & 0xffffffffL;
+        return (seed >> 11) % MAX_NUM;
+    }
+
+    private static void makeInput(int inputLen) {
+        for (int i = 0; i < inputLen; i++) {
+            int t = (int) (pseudoRand());
+            input[i] = t;
+            temp[a] = t;
+            System.out.println(a +"번째 input: "+temp[a++]);
+        }
+    }
+
+    private static int run() throws Exception {
+        int score = 100;
+        int N, userNum, uID = 0, ret, sum, ans;
+        int[] result = new int[10];
+        String str;
+
+        str = br.readLine();
+        N = Integer.parseInt(str);
+
+        for (int i = 0; i < N; i++) {
+            str = br.readLine();
+            userNum = Integer.parseInt(str);
+            makeInput(userNum);
+
+            for (int j = 0; j < userNum; j++) {
+                usersolution.addUser(uID++, input[j]);
+            }
+            ret = usersolution.getTop10(result);
+
+            System.out.println("ret: "+ret);
+
+            sum = 0;
+            for (int j = 0; j < ret; j++) {
+                System.out.println("result = " + result[j]+" temp: "+temp[result[j]]);
+                sum += result[j];
+            }
+
+            System.out.println("sum: "+sum);
+
+            str = br.readLine();
+            ans = Integer.parseInt(str);
+            if (sum != ans) {
+                score = 0;
+            }
+        }
+        return score;
+    }
+
+    public static void main(String[] args) throws Exception {
+        int TC;
+        //System.setIn(new java.io.FileInputStream("res/sample_input.txt"));
+
+        br = new BufferedReader(new InputStreamReader(System.in));
+        String str = br.readLine();
+        TC = Integer.parseInt(str);
+
+        for (int tc = 1; tc <= TC; tc++) {
+            a=0;
+            usersolution.init();
+            System.out.println("#" + tc + " " + run());
+
+            if(tc == 3) {
+                System.out.println(temp[440]);
+                System.out.println(temp[20909]);
+            }
 
 
-        bw.write(sb.toString());
-        bw.flush();
-        br.close();
-        bw.close();
-
+        }
     }
 }
