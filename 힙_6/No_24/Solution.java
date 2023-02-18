@@ -62,9 +62,9 @@ public class Solution {
         // 0,0 부터 탐색 시작
         cost[0][0] = places[0][0];
         visited[0][0] = true;
-        temp.add(new Place(0,0));
+        temp.add(new Place(0, 0));
 
-        while(!temp.isEmpty()) {
+        while (!temp.isEmpty()) {
 
             Place p = temp.poll();
 
@@ -78,13 +78,13 @@ public class Solution {
                 int y_m = y + dy[i];
 
                 // 숫자가 범위를 넘어가면 넘어간다.
-                if(x_m < 0 || y_m < 0 || x_m >= places.length || y_m >= places.length) continue;
+                if (x_m < 0 || y_m < 0 || x_m >= places.length || y_m >= places.length) continue;
 
                 // 현재 위치에서 계산한 cost
                 int c = cost[x][y] + places[x_m][y_m];
 
                 // x_m, y_m 을 방문한 적이 없거나 기존의 cost 가 더 비쌀 때
-                if(!visited[x_m][y_m] || cost[x_m][y_m] > c) {
+                if (!visited[x_m][y_m] || cost[x_m][y_m] > c) {
 
                     // 방문 표시
                     visited[x_m][y_m] = true;
@@ -125,7 +125,7 @@ public class Solution {
             // 탐색 시작
             bfs();
 
-            sb.append("#").append(t).append(" ").append(cost[n-1][n-1]).append("\n");
+            sb.append("#").append(t).append(" ").append(cost[n - 1][n - 1]).append("\n");
         }
 
         bw.write(sb.toString());
@@ -139,7 +139,6 @@ public class Solution {
 class Place {
     int x;
     int y;
-    int cost;
 
     public Place(int x, int y) {
         this.x = x;
