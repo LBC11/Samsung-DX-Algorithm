@@ -80,27 +80,25 @@ public class Solution {
 
         users[lastIdx++] = n;
 
-        int loc = lastIdx -1;
+        int loc = lastIdx - 1;
 
         while (loc / 2 > 0) {
 
             // insert 한 값이 parent 의 num 보다 크다면
-            if (users[loc]  > users[loc / 2]) {
+            if (users[loc] > users[loc / 2]) {
                 // 둘의 위치 교환
                 swap(loc, loc / 2);
 
                 // loc 갱신 후 다시 비교
                 loc /= 2;
-            }
-
-            else break;
+            } else break;
         }
     }
 
     public static int pop() {
 
         // 반환할 값이 없으면 -1
-        if(lastIdx == 1) return -1;
+        if (lastIdx == 1) return -1;
 
         // 반환할 root value
         int ret = users[1];
@@ -159,7 +157,7 @@ public class Solution {
     public static void main(String[] args) throws IOException {
 
         int T = Integer.parseInt(br.readLine());
-        for(int t=1; t<=T; t++) {
+        for (int t = 1; t <= T; t++) {
 
             users = new int[100001];
             lastIdx = 1;
@@ -168,7 +166,7 @@ public class Solution {
 
             int N = Integer.parseInt(br.readLine());
 
-            for(int n=0; n<N; n++) {
+            for (int n = 0; n < N; n++) {
                 st = new StringTokenizer(br.readLine());
 
                 int cmd = Integer.parseInt(st.nextToken());
