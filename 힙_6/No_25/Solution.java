@@ -3,6 +3,40 @@ package 힙_6.No_25;
 import java.io.*;
 import java.util.StringTokenizer;
 
+/*
+3000. 중간값 구하기
+
+심심해하던 홍준이에게 어떤 문제를 줄 지 고민하던 경근이는 다음과 같은 문제를 생각하였다.
+경근이가 처음에 한 개의 자연수를 공책에 적는다.
+그 후, N번에 걸쳐서 자연수 2개씩을 추가적으로 공책에 적는다.
+이 때, 홍준이는 경근이가 수 2개를 추가적으로 적을 때마다 지금까지 적은 수 중에 크기가 중간인 수를 알려주어야 한다.
+예를 들어, 처음에 경근이가 5를 공책에 쓰고, 1과 3, 2와 6, 8과 9를 공책에 썼다고 가정하자.
+자연수 1과 3을 공책에 썼을 때에는, 이전까지 적은 수가 [1, 3, 5]이고, 이 중 크기가 중간인 수는 3이다.
+자연수 2과 6을 공책에 썼을 때에는, 이전까지 적은 수가 [1, 2, 3, 5, 6]이고, 이 중 크기가 중간인 수는 3이다.
+자연수 8과 9를 공책에 썼을 때에는, 이전까지 적은 수가 [1, 2, 3, 5, 6, 8, 9]이고, 이 중 크기가 중간인 수는 5이다.
+N개의 중간값들을 매번 출력하면 출력양이 너무 많기 때문에, 그 수들의 합을 20171109로 나눈 나머지를 출력하는 프로그램을 작성하시오.
+
+[입력]
+첫 줄에 테스트케이스의 개수 T가 주어진다. (1 ≤ T ≤ 10)
+각 테스트 케이스의 첫 번째 줄에 N(1 ≤ N ≤ 200,000)과 경근이가 처음에 공책에 쓴 자연수 A가 주어진다.
+이후 N개의 줄에 걸쳐서, 경근이가 공책에 쓴 자연수 2개를 나타내는 X와 Y가 순서대로 주어진다.
+경근이가 공책에 쓰는 자연수는 1 이상 109 이하이다.
+
+[출력]
+각 테스트케이스마다 한 줄에 걸쳐, 테스트케이스 수 “#(테스트케이스 번호) “를 출력하고, N개의 중간값을 모두 더한 값을 20171109로 나눈 나머지를 출력한다.
+
+[힌트]
+1. N개의 중간값들을 더하는 과정에서 32bit 정수 자료형의 최대 범위를 벗어날 수 있음에 주의합니다.
+따라서 중간값을 더할 때마다, 20171109로 나눈 나머지를 변수에 기록하는 것이 좋습니다.
+
+2. 최대 힙과 최소 힙을 이용하여 문제를 해결할 수 있습니다.
+
+1. 주요 아이디어
+maxHeap 은 중간값보다 작은 수를 저장, minHeap 에는 중간값보다 큰 수를 저장 이라는 틀을 이용하면 편하다.
+
+구현할 때 pop method 에서 parent == largest 이면 break 를 해야하는 데 뺴놓았다가 시간을 엄청 소요한 문제...
+구현 실수 줄여야 한다!!!!
+ */
 public class Solution {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -74,6 +108,8 @@ public class Solution {
                 // parent idx 갱신 후 다시 sort
                 parent_idx = smallest_idx;
             }
+
+            else break;
         }
 
         return ret;
@@ -133,6 +169,8 @@ public class Solution {
                 // parent idx 갱신 후 다시 sort
                 parent_idx = largest_idx;
             }
+
+            else break;
         }
 
         return ret;
@@ -140,53 +178,25 @@ public class Solution {
 
     static void find(long num1, long num2) {
 
-        // num2 가 항상 크기 위해서서
-       if(num1 > num2) {
-            long temp = num1;
-            num1 = num2;
-            num2 = temp;
+        // 중간값 보다 크다면 minHeap 에 insert
+        // 아니면 maxHeap 에 insert
+        if(num1 > maxHeap[1]) min_insert(num1);
+        else max_insert(num1);
+
+        if(num2 > maxHeap[1]) min_insert(num2);
+        else max_insert(num2);
+
+        // 한 쪽의 Heap 으로 둘 다 insert 되면
+        // 많은 쪽에서 pop 후 그 숫자를 적은 쪽에 insert 한다.
+        if(max_last_idx < min_last_idx) {
+            long t = min_pop();
+            max_insert(t);
         }
 
-       max_insert(num1);
-       min_insert(num2);
-
-       if(maxHeap[1] > minHeap[1]) {
-           swap2();
-       }
-
-//       // middle value 는 maxHeap 의 root value 이다.
-//
-//        // 둘 다 middle 보다 큰 경우
-//        if (num2 < maxHeap[1]) {
-//
-//            // 기존 middle 은 min 에 넣는다.
-//            min_insert(max_pop());
-//
-//            // 먼저 둘다 max 에 넣고
-//            max_insert(num1);
-//            max_insert(num2);
-//
-//        }
-//
-//        // 둘 중에 하나만 middle 보다 작고 나머지는 큰 경우
-//        else if (num1 < maxHeap[1] && num2 > maxHeap[1]) {
-//
-//            // 작은 놈은 max 에 넣고 큰 놈은 min 에 넣는다.
-//            max_insert(num1);
-//            min_insert(num2);
-//        }
-//
-//        // 둘 다 middle 보다 큰 경우
-//        else if (num1 > maxHeap[1]) {
-//
-//            max_insert(min_pop());
-//
-//            // 먼저 둘 다 min 에 넣고
-//            min_insert(num1);
-//            min_insert(num2);
-//        }
-
-
+        else if(max_last_idx - 1 > min_last_idx) {
+            long t = max_pop();
+            min_insert(t);
+        }
 
         // result 갱신
         result = (result + maxHeap[1]) % divisor;
@@ -198,20 +208,14 @@ public class Solution {
         heap[idx2] = temp;
     }
 
-    static void swap2() {
-        long temp = maxHeap[1];
-        maxHeap[1] = minHeap[1];
-        minHeap[1] = temp;
-    }
-
     public static void main(String[] args) throws IOException {
 
         int T = Integer.parseInt(br.readLine());
         for (int t = 1; t <= T; t++) {
 
             result = 0L;
-            maxHeap = new long[200001];
-            minHeap = new long[200001];
+            maxHeap = new long[300001];
+            minHeap = new long[300001];
 
             // root idx 가 1
             min_last_idx = 0;
@@ -231,7 +235,6 @@ public class Solution {
             sb.append("#").append(t).append(" ").append(result).append("\n");
 
         }
-
 
         bw.write(sb.toString());
         bw.flush();
