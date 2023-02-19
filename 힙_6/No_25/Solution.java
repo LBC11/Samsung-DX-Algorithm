@@ -107,9 +107,7 @@ public class Solution {
 
                 // parent idx 갱신 후 다시 sort
                 parent_idx = smallest_idx;
-            }
-
-            else break;
+            } else break;
         }
 
         return ret;
@@ -168,9 +166,7 @@ public class Solution {
 
                 // parent idx 갱신 후 다시 sort
                 parent_idx = largest_idx;
-            }
-
-            else break;
+            } else break;
         }
 
         return ret;
@@ -180,20 +176,18 @@ public class Solution {
 
         // 중간값 보다 크다면 minHeap 에 insert
         // 아니면 maxHeap 에 insert
-        if(num1 > maxHeap[1]) min_insert(num1);
+        if (num1 > maxHeap[1]) min_insert(num1);
         else max_insert(num1);
 
-        if(num2 > maxHeap[1]) min_insert(num2);
+        if (num2 > maxHeap[1]) min_insert(num2);
         else max_insert(num2);
 
         // 한 쪽의 Heap 으로 둘 다 insert 되면
         // 많은 쪽에서 pop 후 그 숫자를 적은 쪽에 insert 한다.
-        if(max_last_idx < min_last_idx) {
+        if (max_last_idx < min_last_idx) {
             long t = min_pop();
             max_insert(t);
-        }
-
-        else if(max_last_idx - 1 > min_last_idx) {
+        } else if (max_last_idx - 1 > min_last_idx) {
             long t = max_pop();
             min_insert(t);
         }
