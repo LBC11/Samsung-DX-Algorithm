@@ -134,13 +134,9 @@ class Solution {
 
                     if (ans_pIdList[i] != pIdList[i])
                     {
-                        System.out.println("answer: "+ans_pIdList[i]);
-                        System.out.println("list: "+pIdList[i]);
                         ret = false;
                     }
                 }
-
-                System.out.println();
             }
         }
 

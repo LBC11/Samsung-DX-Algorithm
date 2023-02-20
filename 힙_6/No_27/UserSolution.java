@@ -1,6 +1,8 @@
 package 힙_6.No_27;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 class UserSolution {
 
@@ -11,10 +13,6 @@ class UserSolution {
     int[] lengths;
 
     ArrayList<Integer>[] follower;
-
-    // priority queue
-    Post[] pq;
-    int last_idx;
 
     public void init(int N) {
 
@@ -43,10 +41,10 @@ class UserSolution {
 
         posts[pID] = new Post(pID, timestamp);
 
-        u_posts[uID][lengths[uID]++] = posts[pID];
+        u_posts[uID][lengths[uID] % 1000] = posts[pID];
 
         // idx 1000을 넘어가지 않게 조정
-        lengths[uID] %= 1000;
+        lengths[uID]++;
     }
 
     public void like(int pID, int timestamp) {
@@ -56,198 +54,36 @@ class UserSolution {
 
     public void getFeed(int uID, int timestamp, int[] pIDList) {
 
-        // 저장할 장소
-        pq = new Post[100001];
-        last_idx = 0;
+        // timestamp 차이가 1000초 이상
+        PriorityQueue<Post> pq_1 = new PriorityQueue<>(new Comparator<Post>() {
+            @Override
+            public int compare(Post o1, Post o2) {
+                return o2.timestamp - o1.timestamp;
+            }
+        });
+
+        // timestamp 차이가 1000 이하
+        PriorityQueue<Post> pq_2 = new PriorityQueue<>(new Comparator<Post>() {
+            @Override
+            public int compare(Post o1, Post o2) {
+
+                if(o1.like == o2.like) return o2.timestamp - o1.timestamp;
+                return o2.like - o1.like;
+            }
+        });
 
         // follow 한 사람들의 계시글을 priority queue 에 추가한다.
         for (int f_idx : follower[uID]) {
-            for (int i = 0; i < lengths[f_idx]; i++) {
-                insert(u_posts[f_idx][i], timestamp);
+            for (int i = 0; i < Math.min(lengths[f_idx], 1000); i++) {
+
+                if(timestamp - u_posts[f_idx][i].timestamp > 1000) pq_1.add(u_posts[f_idx][i]);
+                else pq_2.add(u_posts[f_idx][i]);
             }
         }
 
-        for (int i = 0; i < 10; i++) {
-
-            int idx = pop(timestamp);
-
-            if (idx == -1) break;
-
-            pIDList[i] = idx;
-        }
-    }
-
-    void insert(Post post, int timestamp) {
-
-        pq[++last_idx] = post;
-
-        int loc = last_idx;
-
-        while (loc / 2 > 0) {
-
-            int parent_t = timestamp - pq[loc / 2].timestamp;
-            int curr_t = timestamp - pq[loc].timestamp;
-
-            // parent, curr 둘 다 만들어 진지 1000초가 지난 경우
-            if (parent_t >= 1000 && curr_t >= 1000) {
-
-                // timestamp 가 높은 쪽이 우선순위를 가진다.
-                if (pq[loc].timestamp > pq[loc / 2].timestamp) {
-
-                    swap(loc / 2, loc);
-                    loc /= 2;
-
-                }
-
-                // 아니면 반복문 종료
-                else break;
-            }
-
-            // parent 만 만들어 진지 1000초가 지난 경우
-            else if (parent_t >= 1000 && curr_t < 1000) {
-
-                // 무조건 교환이 일어난다.
-                swap(loc / 2, loc);
-                loc /= 2;
-            }
-
-            // child 만 만들어 진지 1000초가 지난 경우
-            else if (parent_t < 1000 && curr_t >= 1000) {
-
-                // parent 우선순위가 크므로 반복문을 종료한다.
-                break;
-            }
-
-            // 둘 다 1000초가 지나지 않은 경우
-            else {
-
-                // parent 보다 like 이 큰 경우
-                if (pq[loc].like > pq[loc / 2].like) {
-                    swap(loc / 2, loc);
-                    loc /= 2;
-                }
-
-                // parent 와 like 이 같지만 timestamp 가 높은 경우
-                else if (pq[loc].like == pq[loc / 2].like && pq[loc].timestamp > pq[loc / 2].timestamp) {
-                    swap(loc, loc / 2);
-                    loc /= 2;
-                } else break;
-            }
-        }
-    }
-
-    int pop(int timestamp) {
-
-        if (last_idx == 0) return -1;
-
-        int ret = pq[1].pID;
-        pq[1] = pq[last_idx--];
-
-        int parent_idx = 1;
-        while (parent_idx * 2 <= last_idx) {
-
-            int left_child_idx = parent_idx * 2;
-            int right_child_idx = parent_idx * 2 + 1;
-            int root_idx = parent_idx;
-
-            if (left_child_idx <= last_idx) {
-
-                int time_root = timestamp - pq[root_idx].timestamp;
-                int time_l = timestamp - pq[left_child_idx].timestamp;
-
-                // root, left 둘 다 만들어 진지 1000초가 지난 경우
-                if (time_root >= 1000 && time_l >= 1000) {
-
-                    // timestamp 가 높은 쪽이 우선순위를 가진다.
-                    if (pq[left_child_idx].timestamp > pq[root_idx].timestamp) {
-
-                        root_idx = left_child_idx;
-                    }
-                }
-
-                // root 만 만들어 진지 1000초가 지난 경우
-                else if (time_root >= 1000 && time_l < 1000) {
-
-                    // 무조건 교환이 일어난다.
-                    root_idx = left_child_idx;
-                }
-
-                // left 만 만들어 진지 1000초가 지난 경우
-                else if (time_root < 1000 && time_l >= 1000) {
-
-                }
-
-                // 둘 다 1000초가 지나지 않은 경우
-                else {
-
-                    // parent 보다 like 이 큰 경우
-                    if (pq[left_child_idx].like > pq[root_idx].like) {
-                        root_idx = left_child_idx;
-                    }
-
-                    // parent 와 like 이 같지만 timestamp 가 높은 경우
-                    else if (pq[left_child_idx].like == pq[root_idx].like && pq[left_child_idx].timestamp > pq[root_idx].timestamp) {
-                        root_idx = left_child_idx;
-                    }
-                }
-            }
-
-            if (right_child_idx <= last_idx) {
-
-                int time_root = timestamp - pq[root_idx].timestamp;
-                int time_right = timestamp - pq[right_child_idx].timestamp;
-
-                // root, right 둘 다 만들어 진지 1000초가 지난 경우
-                if (time_root >= 1000 && time_right >= 1000) {
-
-                    // timestamp 가 높은 쪽이 우선순위를 가진다.
-                    if (pq[right_child_idx].timestamp > pq[root_idx].timestamp) {
-
-                        root_idx = right_child_idx;
-                    }
-                }
-
-                // root 만 만들어 진지 1000초가 지난 경우
-                else if (time_root >= 1000 && time_right < 1000) {
-
-                    // 무조건 교환이 일어난다.
-                    root_idx = right_child_idx;
-                }
-
-                // right 만 만들어 진지 1000초가 지난 경우
-                else if (time_root < 1000 && time_right >= 1000) {
-
-                }
-
-                // 둘 다 1000초가 지나지 않은 경우
-                else {
-
-                    // root 보다 like 이 큰 경우
-                    if (pq[right_child_idx].like > pq[root_idx].like) {
-                        root_idx = right_child_idx;
-                    }
-
-                    // root 와 like 이 같지만 timestamp 가 높은 경우
-                    else if (pq[right_child_idx].like == pq[root_idx].like && pq[right_child_idx].timestamp > pq[root_idx].timestamp) {
-                        root_idx = right_child_idx;
-                    }
-                }
-            }
-
-            if (parent_idx != root_idx) {
-                swap(parent_idx, root_idx);
-                parent_idx = root_idx;
-            } else break;
-
-        }
-
-        return ret;
-    }
-
-    void swap(int num1, int num2) {
-        Post temp = pq[num1];
-        pq[num1] = pq[num2];
-        pq[num2] = temp;
+        int i=0;
+        while(!pq_2.isEmpty() && i<10) pIDList[i++] = pq_2.poll().pID;
+        while(!pq_1.isEmpty() && i<10) pIDList[i++] = pq_1.poll().pID;
     }
 }
 
