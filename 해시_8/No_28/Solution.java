@@ -3,6 +3,7 @@ package 해시_8.No_28;
 import java.io.*;
 import java.util.HashSet;
 import java.util.StringTokenizer;
+
 /*
 2948. 문자열 교집합
 
@@ -33,8 +34,8 @@ public class Solution {
 
     public static void main(String[] args) throws IOException {
 
-        int T= Integer.parseInt(br.readLine());
-        for(int t=1; t<=T; t++) {
+        int T = Integer.parseInt(br.readLine());
+        for (int t = 1; t <= T; t++) {
 
             int ans = 0;
 
@@ -49,13 +50,13 @@ public class Solution {
             HashSet<String> first = new HashSet<>();
 
             st = new StringTokenizer(br.readLine());
-            for(int i=0; i<n; i++) {
+            for (int i = 0; i < n; i++) {
                 first.add(st.nextToken());
             }
 
             st = new StringTokenizer(br.readLine());
-            for(int i=0; i<m; i++) {
-                if(first.contains(st.nextToken())) ans++;
+            for (int i = 0; i < m; i++) {
+                if (first.contains(st.nextToken())) ans++;
             }
 
             sb.append("#").append(t).append(" ").append(ans).append("\n");
