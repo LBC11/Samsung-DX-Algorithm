@@ -4,7 +4,77 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 /*
+9416. Social Media
 
+[문제 설명]
+Social media 에서 사용되는 몇 가지 기능을 구현해보자.
+1. 게시글을 등록한다. 각 게시글들은 등록되는 시점의 timestamp 를 가지고 있다.
+2. 다른 사용자를 “follow” 한다. “follow”를 하게 되면, 그 사용자의 게시글을 볼 수 있다.
+3. 특정 게시글에 “like”를 추가한다.
+4. 특정 사용자를 기준으로 자신이 게시한 글과 자신이 “follow” 한 사용자의 게시글 중 우선 순위가 높은 글부터 내림차순으로 최대 10 개의 게시글을 보여준다.
+
+각 게시글의 우선순위를 계산하는 방법은 다음과 같다.
+
+1. 게시된 지 1,000 초 이내인 게시글이 그렇지 않은 게시글보다 우선순위가 높다.
+2. 게시된 지 1,000 초 이내인 게시글들 중에는 “like” 가 많은 게시글의 우선순위가 높다.
+3. 게시된 지 1,000 초 이내이면서 “like” 의 개수가 같은 게시글들 중에는 “timestamp” 가 높은 게시글의 우선순위가 높다.
+4. 게시된 지 1,000 초를 초과한 게시글의 경우, “timestamp” 가 높은 게시글의 우선순위가 높다.
+
+다음은 구현해야 할 API이다.
+
+void init(int N)
+각 testcase 시작 시 초기화를 위해 1번 호출된다.
+
+Parameters
+N: 사용자 수 (2 ≤ N ≤ 1,000)
+
+void follow(int uID1, int uID2, int timestamp)
+“uID1” 사용자가 “uID2” 사용자를 “follow” 한다.
+“uID1” 사용자는 “uID2” 사용자의 모든 게시글을 볼 수 있다.
+
+Parameters
+uID1, uID2 : 사용자의 id (1 ≤ uID1, uID2 ≤ N)
+timestamp : 현재 시점의 “timestamp” (1 ≤ timestamp ≤ 100,000)
+
+void makePost(int uID, int pID, int timestamp)
+“uID” 사용자가 “pID” 게시글을 게시한다.
+
+Parameters
+uID : 사용자의 ID (1 ≤ uID ≤ N)
+pID : 게시글의 ID ( 1 부터 오름차순으로 주어진다. )
+timestamp : 현재 시점의 “timestamp” (1 ≤ timestamp ≤ 100,000)
+
+void like(int pID, int timestamp)
+“pID” 게시글에 “like” 를 1 번 추가 한다.
+“pID” 는 makePost() 에서 전달되었던 값으로만 주어 진다.
+
+Parameters
+pID : “like” 를 추가할 게시글의 pID
+timestamp : 현재 시점의 “timestamp” (1 ≤ timestamp ≤ 100,000)
+
+void getFeed(int uID, int timestamp, int pIDList[])
+현재 “timestamp” 를 기준으로 “uID” 사용자에게 보여지는 최대 10 개의 게시글의 “pID” 들을 찾아 우선순위의 내림차순으로 “pIDList[]” 배열에 저장하여 반환 한다.
+
+Parameters
+uID : 사용자의 id (1 ≤ uID ≤ N)
+timestamp : 현재 시점의 timestamp (1 ≤ timestamp ≤ 100,000)
+pIDList[] : 보여지는 게시글의 pID 들을 저장하는 배열
+
+[제약사항]
+1.     사용자 수 N 은 2 이상 1,000 이하의 정수이다. (2 ≤ N ≤ 1,000)
+2.     timestamp 는 1 에서 시작하고 최대 100,000 까지 증가한다.
+3.     모든 함수들은 timestamp 오름차순으로 호출된다.
+4.     모든 게시물들의 timestamp 는 서로 다르다.
+5.     follow(), makePost(), like() 함수의 호출 횟수는 각각 100,000 회 이하이다.
+6.     getFeed() 함수의 호출 횟수는 5,000 회 이하이다.
+7.     특정 사용자가 한번 “follow” 한 사용자를 다시 “follow” 하는 호출은 발생하지 않는다.
+
+[입출력]
+입출력은 제공되는 Main 부분의 코드에서 처리하므로 User Code 부분의 코드에서는 별도로 입출력을 처리하지 않는다.
+sample input에 대한 정답 출력 결과는 아래와 같은 형태로 보여진다.
+
+주요 아이디어
+1. priorityQueue 를 2개 써야 한다는 것을 제외하면 특별한 것이 없다.
  */
 class UserSolution {
 
