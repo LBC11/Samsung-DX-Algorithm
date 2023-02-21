@@ -54,7 +54,7 @@ public class Solution {
             // 값 갱신
             if (s.charAt(i) == s.charAt(j)) pi[i] = j + 1;
 
-            // p[i-1]~0 까지의 idx 중 같은게 없다면 일치하는 suffix prefix 가 없다는 의미
+                // p[i-1]~0 까지의 idx 중 같은게 없다면 일치하는 suffix prefix 가 없다는 의미
             else pi[i] = 0;
         }
     }
@@ -77,7 +77,7 @@ public class Solution {
             } else {
 
                 // j = 0 일 때 j-1 로 인해 outOfIndex error 방지
-                if(j>0) {
+                if (j > 0) {
 
                     // 이미 일치하는 부분이 있으면 pi 배열을 통해 이미 일치한 부분을 제외한다.
                     j = pi[j - 1];
@@ -92,7 +92,7 @@ public class Solution {
                 ans++;
 
                 // pi 배열을 통해 이미 일치한 부분을 제외한다.
-                j = pi[j-1];
+                j = pi[j - 1];
             }
         }
 
