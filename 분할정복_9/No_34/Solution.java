@@ -34,6 +34,10 @@ ii)번째 케이스는 2X가 S를 넘으므로, 2X에 S를 빼준다고 볼 수 
 이를 통해 위 연산을 K번 반복하면 x값은 X -> X * 2^K (mod S) 라고 볼 수 있습니다.
 
 따라서 (x, y)에서 x를 log S 만에 구할 수 있고 이를 통해 y값도 구해낼 수 있습니다.
+
++
+1. modulo 함수 안 logic 에서 되도록이면 재귀적으로 함수 호출을 지양해야 stackOverFlow 를 피할수 있다.
+2. int 로는 범위를 넘어갈 수 있으닌 long 을 이용하자.
  */
 public class Solution {
 
