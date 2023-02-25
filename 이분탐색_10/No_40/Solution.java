@@ -15,7 +15,7 @@ public class Solution {
         int T= Integer.parseInt(br.readLine());
         for(int t=1; t<=T; t++) {
 
-            sb.append("#").append(" ").append(t).append(" ").append("\n");
+            sb.append("#").append(t).append(" ").append("\n");
         }
 
         bw.write(sb.toString());
