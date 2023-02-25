@@ -54,7 +54,7 @@ public class Solution {
             }
 
             // p를 모두 사용하고 연속적으로 채울 수 있다면
-            else if(check == 0){
+            else if (check == 0) {
 
                 // 사용하지 않은 p(-check) 만큼 더한 값으로 max 기록 갱신
                 max = Math.max(study[end] - study[start] + 1, max);
