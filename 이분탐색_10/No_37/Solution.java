@@ -44,9 +44,15 @@ public class Solution {
 
     private static long binarySearch(long candle) {
 
+        // i*(i+1) 이므로 i*i 보다 커야 하므로
+        // 계산을 빠르게 하기 위해 start 지점으로 잡음
         long start = (long) Math.sqrt(candle);
+
+        // 또한 결과가 2*i*i 보다 작다.
         long end = start * 2;
 
+        // = 인지 갱신할 때 mid 인지 아니면 mid -1 인지에 따라
+        // 무한 loop 도는 게 결정되니 잘 기억해둬라.
         while(start <= end) {
 
             long mid  = (start + end) / 2;
