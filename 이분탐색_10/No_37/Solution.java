@@ -77,9 +77,9 @@ public class Solution {
 
     private static int check(long num, long candle) {
 
-        // temp 가 작을 경우 -
+        // 전자가 작을 경우 -
         // temp == candle 0
-        // temp 가 클 경우 +
+        // 전자가 클 경우 +
         return Long.compare(num * (num + 1), candle * 2);
     }
 }
