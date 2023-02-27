@@ -83,6 +83,10 @@ public class Solution {
                 horse.put(j, horse.getOrDefault(j, 0) + 1);
             }
 
+            // 굳이 이렇게 길이에 따라 a1 인지 a2 인지 정하는 이유
+            // cow: 3 0 6
+            // horse: -2 5 4 2
+            // 에서 cow 를 기준으로 하면 6 - 4 쌍이 생략될 수 있다.
             if (N > M) {
 
                 a1 = cow;
