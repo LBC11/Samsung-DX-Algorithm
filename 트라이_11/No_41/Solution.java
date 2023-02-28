@@ -10,6 +10,7 @@ public class Solution {
 
     static Node root;
 
+    // Trie 에 문자열 넣기
     static void insert(String s) {
 
         Node node = root;
