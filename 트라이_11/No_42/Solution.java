@@ -59,12 +59,10 @@ public class Solution {
             return;
         }
 
-        while (true) {
+        // k번째 접미어를 찾아 sb 에 더할 때까지 반복
+        while (k > 0) {
 
-            if (node.isTerminal) k--;
-
-            if (k == 0) return;
-
+            // 지금까지 지나친 접미어의 개수를 뺀 값
             int temp = k;
 
             for (int i = 0; i < 26; i++) {
@@ -78,6 +76,14 @@ public class Solution {
                     if (temp <= 0) {
 
                         // 다음 node 에서 사용할 k
+                        // 41번의 k번째 접미어를 구하는 경우에는 접미어이기에
+                        // root node 를 제외한 다른 node 의 degree(child node 개수)는 1이하이다.
+                        // 그래서 temp 가 0이하인 방향으로 끝까지 가기만 해도 된다.
+                        // leaf node 면 0 아니면 1
+                        // 하지만 이 문제의 경우 root node 를 제외한 node 에서도 root 와 같이
+                        // degree 가 2 이상을 가질 수 있기때문에 temp 을 통해서 방향만 설정하면 안 된다.
+                        // next node 를 새로운 root 로 생각하고 다시 한번 root 에서 탐색하는 것처럼 반복해야 하기에
+                        // k를 여기서 지금까지 지나친 문자열의 개수를 제외한 수로 갱신해주어야 한다.
                         k = temp + node.next[i].cnt;
 
                         sb.append((char) (i + 'a'));
@@ -87,6 +93,9 @@ public class Solution {
                     }
                 }
             }
+
+            // current node 가 terminal 이라면
+            if (node.isTerminal) k--;
         }
     }
 
@@ -106,7 +115,7 @@ public class Solution {
                     String temp = s.substring(j, i);
 
                     // String temp 가 trie 에 존재하지 않으면
-                    if(!search(temp)) {
+                    if (!search(temp)) {
 
                         // trie 에 insert 한다.
                         insert(temp);
