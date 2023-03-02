@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 1. segment tree 이용
 2. init 당시 leaf node 의 parent node 를 구할 때 최대값 혹은 최소값을 할당하면 된다
 
++ 주석 처리한 부분이 부분합 구하는 logic 이다
 -> 아직도 query 부분 logic 이 어떤 방식으로 이뤄지는지 이해가 안되었다... 공부 더하자!!!
  */
 public class Solution {
@@ -90,12 +91,16 @@ public class Solution {
     private static void init(long[] arr) {
 
 //        segment_tree = new long[arr.length * 2];
+
+        // segment tree 의 크기는 arr.length * 2면 된다.
         max_segment_tree = new long[arr.length * 2];
         min_segment_tree = new long[arr.length * 2];
 
         for (int i = 0; i < arr.length; i++) {
 
 //            segment_tree[i + arr.length] = arr[i];
+
+            // leaf node 에 구간이 1인 각 원소값 할당
             max_segment_tree[i + arr.length] = arr[i];
             min_segment_tree[i + arr.length] = arr[i];
         }
@@ -103,6 +108,7 @@ public class Solution {
         for (int i = arr.length - 1; i > 0; i--) {
 //            segment_tree[i] = segment_tree[i << 1] + segment_tree[i << 1 | 1];
 
+            // parent node 에 child node 의 원소값 중 max 혹은 min 할당
             max_segment_tree[i] = Math.max(max_segment_tree[i << 1], max_segment_tree[i << 1 | 1]);
             min_segment_tree[i] = Math.min(min_segment_tree[i << 1], min_segment_tree[i << 1 | 1]);
         }
@@ -153,6 +159,8 @@ public class Solution {
 
         // 해당 idx 의 value 갱신
 //        segment_tree[idx] = num;
+
+        // 해당하는 idx 의 leaf node value 갱신
         max_segment_tree[idx] = num;
         min_segment_tree[idx] = num;
 
