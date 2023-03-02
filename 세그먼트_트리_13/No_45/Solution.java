@@ -94,6 +94,7 @@ public class Solution {
 
         }
 
+        // 시작이 홀수 idx 일 때 result 에 -1 을 곱한다.
         if (left_temp % 2 == 1) result *= -1;
 
         sb.append(" ").append(result);
@@ -101,6 +102,7 @@ public class Solution {
 
     private static void update_tree(int idx, long num, int n) {
 
+        // 홀수 idx 일 때 -1 을 곱해서 할당한다.
         if (idx % 2 == 1) num *= -1;
 
         idx += n;
@@ -120,15 +122,13 @@ public class Solution {
 
         for (int i = 0; i < arr.length; i++) {
 
+            // 홀수 idx 일 때 -1 을 곱해서 할당한다.
             if (i % 2 == 0) segment_tree[arr.length + i] = arr[i];
             else segment_tree[arr.length + i] = -arr[i];
-
         }
 
         for (int i = arr.length - 1; i > 0; i--) {
             segment_tree[i] = segment_tree[i << 1] + segment_tree[i << 1 | 1];
         }
     }
-
-
 }
