@@ -1,94 +1,69 @@
 package 해시_8.No_32;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class UserSolution {
 
-    int[] pack_numbers;
-//    HashMap<Integer, char[]> pack_record;
+    int[] hash_int;
+    char[] string;
 
     void init(int N, char[] init_string) {
 
-        pack_numbers = new int[N - 2];
+        hash_int = new int[N - 2];
+        string = Arrays.copyOfRange(init_string, 0, N);
 
         for (int i = 0; i < N - 2; i++) {
-            pack_numbers[i] = bitPacking(init_string, i);
+            hash_int[i] = getHash(init_string, i);
         }
-
-//        pack_record = new HashMap<>();
     }
 
     int change(char[] string_A, char[] string_B) {
 
-        int num_A = bitPacking(string_A, 0);
-        int num_B = bitPacking(string_B, 0);
+        int hash_A = getHash(string_A, 0);
+        int hash_B = getHash(string_B, 0);
 
         int ret = 0;
 
-        ArrayList<Integer> revise_idx = new ArrayList<>();
+        for (int i = 0; i < hash_int.length; i++) {
 
-        for (int i = 0; i < pack_numbers.length; i++) {
+            if (hash_int[i] == hash_A) {
+                hash_int[i] = hash_B;
 
-            if (pack_numbers[i] == num_A) {
-                pack_numbers[i] = num_B;
+                // string 갱신
+                string[i] = string_B[0];
+                string[i + 1] = string_B[1];
+                string[i + 2] = string_B[2];
 
-                revise_idx.add(i);
+                // hash 값 재조정
+                if (i - 2 >= 0) {
 
-                // 그 뒤 2번째 까지 문자열이 바뀌면서 기존의 packing 값도 다시 계산해야 한다.
+                    // i - 2번째 hash 값 재조정
+                    hash_int[i - 2] = getHash(new char[]{string[i - 2], string[i - 1], string[i]}, 0);
+                }
+
+                if (i - 1 >= 0) {
+
+                    // i - 1번째 hash 값 재조정
+                    hash_int[i - 1] = getHash(new char[]{string[i - 1], string[i], string[i + 1]}, 0);
+
+                }
+
+                if (i + 1 < hash_int.length) {
+
+                    // i + 1번째 hash 값 재조정
+                    hash_int[i + 1] = getHash(new char[]{string[i + 1], string[i + 2], string[i + 3]}, 0);
+                }
+
+                if (i + 2 < hash_int.length) {
+
+                    // i + 2번째 hash 값 재조정
+                    hash_int[i + 2] = getHash(new char[]{string[i + 2], string[i + 3], string[i + 4]}, 0);
+                }
+
+                // 그 뒤 2번째 까지 문자열이 바뀌면서 기존의 hash 값도 다시 계산해야 한다.
                 i += 2;
 
                 ret++;
-            }
-        }
-
-        // change 되면서 영향 받은 hash 값들 재조정
-        for (int i : revise_idx) {
-
-            char[] unpack = unpack_all(pack_numbers[i]);
-            char[] new_string;
-
-            if (i - 2 >= 0) {
-
-                // i - 2번째 hash 값 재조정
-                new_string = unpack_all(pack_numbers[i - 2]);
-
-                new_string[2] = unpack[0];
-
-                pack_numbers[i - 2] = bitPacking(new_string, 0);
-            }
-
-            if (i - 1 >= 0) {
-
-                // i - 1번째 hash 값 재조정
-                new_string = unpack_all(pack_numbers[i - 1]);
-
-                new_string[1] = unpack[0];
-                new_string[2] = unpack[1];
-
-                pack_numbers[i - 1] = bitPacking(new_string, 0);
-            }
-
-            if (i + 1 < pack_numbers.length) {
-
-                // i + 1번째 hash 값 재조정
-                new_string = unpack_all(pack_numbers[i + 1]);
-
-                new_string[0] = unpack[1];
-                new_string[1] = unpack[2];
-
-                pack_numbers[i + 1] = bitPacking(new_string, 0);
-
-            }
-
-            if (i + 2 < pack_numbers.length) {
-
-                // i + 2번째 hash 값 재조정
-                new_string = unpack_all(pack_numbers[i + 2]);
-
-                new_string[0] = unpack[2];
-
-                pack_numbers[i + 2] = bitPacking(new_string, 0);
             }
         }
 
@@ -97,67 +72,12 @@ public class UserSolution {
 
     void result(char[] ret) {
 
-        for (int i = 0; i < pack_numbers.length - 1; i++) {
-
-            ret[i] = unpack_first(pack_numbers[i]);
-        }
-
-        char[] rets = unpack_all(pack_numbers[pack_numbers.length - 1]);
-
-        for (int i = 0; i < 3; i++) {
-            ret[pack_numbers.length - 1 + i] = rets[i];
-        }
+        System.arraycopy(string, 0, ret, 0, string.length);
     }
 
-    int bitPacking(char[] arr, int start) {
+    int getHash(char[] arr, int i) {
 
-        int ans = 0;
-
-        int j = 0;
-        for (int i = start; i < start + 3; i++) {
-
-            int num = arr[i] - 'a';
-
-            // num 의 j번째 bit 값이 1이면 ans 에 해당 bit 값 더하기
-            for (int t = 0; t < 5; t++) {
-                if ((num & (1 << t)) != 0) ans += (1 << j);
-                j++;
-            }
-        }
-
-        return ans;
-    }
-
-    // 첫번째 글자만 unpack 후 return
-    char unpack_first(int packed) {
-
-        int num = 0;
-
-        for (int i = 0; i < 5; i++) {
-
-            if ((packed & (1 << i)) != 0) num += (1 << i);
-        }
-
-        return (char) (num + 'a');
-    }
-
-    // 모든 글자 unpack 후 return
-    char[] unpack_all(int packed) {
-
-        char[] ret = new char[3];
-
-        for (int i = 0; i < 3; i++) {
-
-            int num = 0;
-
-            for (int j = i * 5; j < i * 5 + 5; j++) {
-                if ((packed & (1 << j)) != 0) num += (1 << (j - i * 5));
-            }
-
-            // unpack 한 글자
-            ret[i] = (char) (num + 'a');
-        }
-
-        return ret;
+        return (arr[i] - 'a') * 26 * 26 + (arr[i + 1] - 'a') * 26 + (arr[i + 2] - 'a');
     }
 }
+
