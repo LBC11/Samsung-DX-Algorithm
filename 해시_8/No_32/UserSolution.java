@@ -2,82 +2,88 @@ package 해시_8.No_32;
 
 import java.util.Arrays;
 
-public class UserSolution {
+class UserSolution {
+    final int MAX_N = 50000;
+    final int HASH_SIZE = 26 * 26 * 26;
+    char[] str;
+    Node[] nodes = new Node[MAX_N];
+    Node[] strHash = new Node[HASH_SIZE];
 
-    int[] hash_int;
-    char[] string;
-
-    void init(int N, char[] init_string) {
-
-        hash_int = new int[N - 2];
-        string = Arrays.copyOfRange(init_string, 0, N);
-
-        for (int i = 0; i < N - 2; i++) {
-            hash_int[i] = getHash(init_string, i);
+    void init(int n, char[] init_string) {
+        str = Arrays.copyOfRange(init_string, 0, n);
+        for (int i = 0; i < HASH_SIZE; ++i) {
+            strHash[i] = new Node(-1, i, null, null);
         }
+        for (int i = n - 3; i >= 0; --i) {
+
+            // n-3 ~ n 까지의 str.charAt value 의 hash 값
+            int hash = getHash(str, i);
+
+            // node init
+            nodes[i] = new Node(i, hash, null, null);
+
+            //
+            nodes[i].prev = strHash[hash];
+            nodes[i].next = strHash[hash].next;
+            if (strHash[hash].next != null) strHash[hash].next.prev = nodes[i];
+            strHash[hash].next = nodes[i];
+        }
+    }
+
+    int getHash(char[] a, int i) {
+        return (a[i] - 'a') * 26 * 26 + (a[i + 1] - 'a') * 26 + (a[i + 2] - 'a');
     }
 
     int change(char[] string_A, char[] string_B) {
+        int hashA = getHash(string_A, 0);
+        int cnt = 0;
 
-        int hash_A = getHash(string_A, 0);
-        int hash_B = getHash(string_B, 0);
+        int idx;
+        Node node = strHash[hashA].next;
 
-        int ret = 0;
+        while (node != null) {
+            cnt++;
+            idx = node.idx;
+            str[idx] = string_B[0];
+            str[idx + 1] = string_B[1];
+            str[idx + 2] = string_B[2];
 
-        for (int i = 0; i < hash_int.length; i++) {
+            while (node != null && node.idx - idx <= 2) node = node.next;
 
-            if (hash_int[i] == hash_A) {
-                hash_int[i] = hash_B;
+            for (int i = idx - 2; i <= idx + 2; ++i) {
+                if (i < 0 || i >= str.length - 2) continue;
 
-                // string 갱신
-                string[i] = string_B[0];
-                string[i + 1] = string_B[1];
-                string[i + 2] = string_B[2];
-
-                // hash 값 재조정
-                if (i - 2 >= 0) {
-
-                    // i - 2번째 hash 값 재조정
-                    hash_int[i - 2] = getHash(new char[]{string[i - 2], string[i - 1], string[i]}, 0);
-                }
-
-                if (i - 1 >= 0) {
-
-                    // i - 1번째 hash 값 재조정
-                    hash_int[i - 1] = getHash(new char[]{string[i - 1], string[i], string[i + 1]}, 0);
-
-                }
-
-                if (i + 1 < hash_int.length) {
-
-                    // i + 1번째 hash 값 재조정
-                    hash_int[i + 1] = getHash(new char[]{string[i + 1], string[i + 2], string[i + 3]}, 0);
-                }
-
-                if (i + 2 < hash_int.length) {
-
-                    // i + 2번째 hash 값 재조정
-                    hash_int[i + 2] = getHash(new char[]{string[i + 2], string[i + 3], string[i + 4]}, 0);
-                }
-
-                // 그 뒤 2번째 까지 문자열이 바뀌면서 기존의 hash 값도 다시 계산해야 한다.
-                i += 2;
-
-                ret++;
+                int hash = getHash(str, i);
+                if (nodes[i].hash == hash) continue;
+                nodes[i].hash = hash;
+                if (nodes[i].prev != null) nodes[i].prev.next = nodes[i].next;
+                if (nodes[i].next != null) nodes[i].next.prev = nodes[i].prev;
+                Node tempNode = strHash[hash];
+                while (tempNode.next != null && tempNode.next.idx < i) tempNode = tempNode.next;
+                nodes[i].next = tempNode.next;
+                tempNode.next = nodes[i];
+                nodes[i].prev = tempNode;
+                if (nodes[i].next != null) nodes[i].next.prev = nodes[i];
             }
         }
-
-        return ret;
+        return cnt;
     }
 
     void result(char[] ret) {
-
-        System.arraycopy(string, 0, ret, 0, string.length);
-    }
-
-    int getHash(char[] arr, int i) {
-
-        return (arr[i] - 'a') * 26 * 26 + (arr[i + 1] - 'a') * 26 + (arr[i + 2] - 'a');
+        System.arraycopy(str, 0, ret, 0, str.length);
     }
 }
 
+class Node {
+    int idx;
+    int hash;
+    Node prev;
+    Node next;
+
+    public Node(int idx, int hash, Node prev, Node next) {
+        this.idx = idx;
+        this.hash = hash;
+        this.prev = prev;
+        this.next = next;
+    }
+}
