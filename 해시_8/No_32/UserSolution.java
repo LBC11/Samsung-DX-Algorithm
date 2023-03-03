@@ -5,12 +5,8 @@ import java.util.HashMap;
 
 public class UserSolution {
 
-    private final long Hash_size = 1 << 30;
-    private final long DIV = Hash_size - 1;
-
-    HashMap<Integer, String> record = new HashMap<>();
-
     int[] pack_numbers;
+//    HashMap<Integer, char[]> pack_record;
 
     void init(int N, char[] init_string) {
 
@@ -19,6 +15,8 @@ public class UserSolution {
         for (int i = 0; i < N - 2; i++) {
             pack_numbers[i] = bitPacking(init_string, i);
         }
+
+//        pack_record = new HashMap<>();
     }
 
     int change(char[] string_A, char[] string_B) {
@@ -111,25 +109,6 @@ public class UserSolution {
         }
     }
 
-    int getHash(char[] arr, int start) {
-
-        long hash = 5381;
-
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = start; i < start + 3; i++) {
-
-            hash = (hash << 3) + hash + arr[i];
-            sb.append(arr[i]);
-        }
-
-        int ret = (int) (hash & DIV);
-
-        record.put(ret, sb.toString());
-
-        return ret;
-    }
-
     int bitPacking(char[] arr, int start) {
 
         int ans = 0;
@@ -154,12 +133,12 @@ public class UserSolution {
 
         int num = 0;
 
-        for (int i = 10; i < 15; i++) {
+        for (int i = 0; i < 5; i++) {
 
-            if ((packed & (1 << i)) != 0) num += (1 << (i - 10));
+            if ((packed & (1 << i)) != 0) num += (1 << i);
         }
 
-        return (char) num;
+        return (char) (num + 'a');
     }
 
     // 모든 글자 unpack 후 return
@@ -176,7 +155,7 @@ public class UserSolution {
             }
 
             // unpack 한 글자
-            ret[i] = (char) num;
+            ret[i] = (char) (num + 'a');
         }
 
         return ret;
