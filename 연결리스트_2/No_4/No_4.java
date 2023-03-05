@@ -28,6 +28,9 @@ import java.util.StringTokenizer;
 
 [제약 사항]
 실행 시간 60ms 이하
+
+주요 아이디어
+1. LinkedList 직접 구현
  */
 public class No_4 {
 
