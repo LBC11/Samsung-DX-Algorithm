@@ -38,29 +38,33 @@ public class No_3 {
     static char[] peoples = {'A', 'B', 'C', 'D'};
     static String s;
 
+    // 첫번째 idx: idx 번째 날
+    // 두번째 idx: 그 날에 동아리 활동에 참여하는 사람을 의미한는 정보 -> 1111(15) 는 모든 인원이 참여함을 뜻한다.
     static int[][] cases;
 
     static long solution() {
 
-        // 모든 날들에 대해서
+        // day 는 1부터 시작
+        // but string.charAt() 을 이용하기 위해
+        // i+1 이 오늘을 i 가 전 날을 의미
         for(int i=0; i<s.length(); i++) {
 
             // 오늘 동아리방 활동 담당자
             int n = activity(i);
 
-            // j는 current
+            // j는 current state(오늘 활동에 참여하는 인원을 나타내는 정보)
             for(int j=1; j<(1<<4); j++) {
 
                 // current 에 동아리방 활동 담당자가 포함되었을 때
                 if(responsibility(n,j)) {
 
-                    // k는 previous
+                    // k는 previous state(전 날 활동에 참여하는 인원을 나타내는 정보)
                     for(int k=1; k<(1<<4); k++) {
 
-                        // current 와 previous 사이에 교집합이 있을 경우
+                        // 오늘(current)과 전 날(previous)에 둘 다 참여한 사람이 있는 경우
                         if(subset(j,k)) {
 
-                            // 경우의 수 갱신
+                            // 오늘 j
                             cases[i+1][j] += cases[i][k];
 
                             // 큰 수 방지
@@ -73,6 +77,7 @@ public class No_3 {
 
         long ans = 0;
 
+        // 맨 마지막 날에 각 i 번째 사람이 활동하는 경우의 수를 모두 더한다.
         for(int i=1; i<(1<<4); i++) {
             ans += cases[s.length()][i];
             ans %= divisor;
@@ -81,7 +86,7 @@ public class No_3 {
         return ans;
     }
 
-    // 오늘 동아리방 활동 담당이 몇번째 사람인지
+    // 오늘 동아리방 활동 담당이 몇번째 idx bit 를 의미하는지
     static int activity(int idx) {
         for (int i = 0; i < 4; i++) {
             if (peoples[i] == s.charAt(idx)) {
@@ -92,7 +97,7 @@ public class No_3 {
         return 0;
     }
 
-    // n번째 동아리원이 m에 포함되어 있는지
+    // 책임자인 n번째 동아리원이 m에 포함되어 있는지
     static boolean responsibility(int n, int m) {
 
         // 포함되어있으면 true
@@ -100,11 +105,15 @@ public class No_3 {
     }
 
     // a 와 b 사이에 부분집합이 존재하는지
+    // -> 두 날의 참석인원을 뜻하는 int a 와 int b 에 겹치는 사람(bit)이 있는지
     static boolean subset(int a, int b) {
         for (int i = 0; i < 4; i++) {
+
+            // a 와 b 둘다에 i 번째 bit 가 1인 경우
             if (((a & (1 << i)) >> i) == 1 && ((b & (1 << i)) >> i) == 1) return true;
         }
 
+        // 없는 경우
         return false;
     }
 

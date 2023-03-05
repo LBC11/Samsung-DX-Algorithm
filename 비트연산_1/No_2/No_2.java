@@ -7,6 +7,9 @@ import java.util.StringTokenizer;
 이진수 표현
 
 정수 N, M 이 주어질 때, M의 이진수 표현의 마지막 N 비트가 모두 1로 켜져 있는지 아닌지를 판별하여 출력하라.
+
+주요 아이디어
+1. bit 연산자 중 하나인 shift 연산자를 이용
  */
 public class No_2 {
 
