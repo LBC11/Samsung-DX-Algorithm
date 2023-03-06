@@ -5,9 +5,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-/*
-Doubly Linked List 구현하기
- */
+
 public class Solution {
 
     private final static int MAX_NODE = 10000;

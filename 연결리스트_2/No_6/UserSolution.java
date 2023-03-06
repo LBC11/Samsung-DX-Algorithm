@@ -10,6 +10,16 @@ class Node {
     }
 }
 
+/*
+기초 Single Linked List 연습
+
+주어진 구조체(위의 Node) 와 함수를 사용하여,
+Single Linked List 를 만들어 보자.
+
+주요 아이디어
+1. LinkedList 구현
+
+ */
 public class UserSolution {
 
     private final static int MAX_NODE = 10000;

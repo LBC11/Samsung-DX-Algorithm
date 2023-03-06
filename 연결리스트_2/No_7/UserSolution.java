@@ -14,6 +14,15 @@ class Node {
     }
 }
 
+/*
+Doubly Linked List 구현하기
+
+주어진 구조체(위의 Node) 와 함수를 사용하여,
+Doubly Linked List 를 만들어 보자.
+
+주요 아이디어
+1. Doubly Linked List 구현
+ */
 public class UserSolution {
 
     private final static int MAX_NODE = 10000;
