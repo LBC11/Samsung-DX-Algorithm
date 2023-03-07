@@ -1,6 +1,6 @@
 package 해시_8.No_32;
 
-import java.util.Arrays;
+import java.util.*;
 
 /*
 문자열 암호화
@@ -48,89 +48,131 @@ void result(char ret[])
 
 [입출력]
 입출력은 제공되는 Main 부분의 코드에서 처리하므로 User Code 부분의 코드에서는 별도로 입출력을 처리하지 않는다.
+
+주요 아이디어
+
+
+실패 분석
+1. 그동안 hash 하는 방법이 잘못된 줄 알고 라빈 카프 알고리즘, 비트 패킹 등등 여러가지 시도를 했었는데
+본질적인 이유는 ArrayList 를 사용했다는 거였다. ArrayList 는 중간 idx 의 element 를 delete 할 시
+그 뒤의 element 를 한칸씩 당기는데 이러한 과정에서 발생하는 시간이 O(n)이다.
+-> LinkedList 구현할 때 배웠던 건데 다시 한번 살펴보자
+2. 함수를 getHash 함수 호출할 때 기존의 string 을 사용하면 되는데 new 로 char[] 을 새로 선언하는 비효율성이 있었다.
+3.
+
+
  */
-class UserSolution {
-    final int MAX_N = 50000;
-    final int HASH_SIZE = 26 * 26 * 26;
-    char[] str;
-    Node[] nodes = new Node[MAX_N];
-    Node[] strHash = new Node[HASH_SIZE];
+import java.util.Arrays;
 
-    void init(int n, char[] init_string) {
-        str = Arrays.copyOfRange(init_string, 0, n);
-        for (int i = 0; i < HASH_SIZE; ++i) {
-            strHash[i] = new Node(-1, i, null, null);
-        }
-        for (int i = n - 3; i >= 0; --i) {
+public class UserSolution {
 
-            // n-3 ~ n 까지의 str.charAt value 의 hash 값
-            int hash = getHash(str, i);
+    // key: hash value
+    // value: 해당 hash value 을 가지는 idx
+    HashMap<Integer, TreeSet<Integer>> map;
 
-            // node init
-            nodes[i] = new Node(i, hash, null, null);
+    char[] string;
 
-            //
-            nodes[i].prev = strHash[hash];
-            nodes[i].next = strHash[hash].next;
-            if (strHash[hash].next != null) strHash[hash].next.prev = nodes[i];
-            strHash[hash].next = nodes[i];
+    void init(int N, char[] init_string) {
+
+        map = new HashMap<>();
+        string = Arrays.copyOfRange(init_string, 0, N);
+
+        for (int i = 0; i < N - 2; i++) {
+
+            // map info 할당
+            int hash = getHash(init_string, i);
+            if (!map.containsKey(hash)) map.put(hash, new TreeSet<>());
+            map.get(hash).add(i);
         }
     }
 
-    int getHash(char[] a, int i) {
-        return (a[i] - 'a') * 26 * 26 + (a[i + 1] - 'a') * 26 + (a[i + 2] - 'a');
-    }
+    public int change(char[] string_A, char[] string_B) {
 
-    int change(char[] string_A, char[] string_B) {
-        int hashA = getHash(string_A, 0);
-        int cnt = 0;
+        // 각 hash value
+        int hash_A = getHash(string_A, 0);
+        int hash_B = getHash(string_B, 0);
 
-        int idx;
-        Node node = strHash[hashA].next;
+        int ret = 0;
 
-        while (node != null) {
-            cnt++;
-            idx = node.idx;
-            str[idx] = string_B[0];
-            str[idx + 1] = string_B[1];
-            str[idx + 2] = string_B[2];
+        // hash_A 의 value 를 가지는 idx 가 없을 경우 0 return
+        if (!map.containsKey(hash_A)) return ret;
 
-            while (node != null && node.idx - idx <= 2) node = node.next;
+        // hash_B 의 set init
+        if (!map.containsKey(hash_B)) map.put(hash_B, new TreeSet<>());
 
-            for (int i = idx - 2; i <= idx + 2; ++i) {
-                if (i < 0 || i >= str.length - 2) continue;
+        // 전 단계에 change 한
+        int prev = -3;
 
-                int hash = getHash(str, i);
-                if (nodes[i].hash == hash) continue;
-                nodes[i].hash = hash;
-                if (nodes[i].prev != null) nodes[i].prev.next = nodes[i].next;
-                if (nodes[i].next != null) nodes[i].next.prev = nodes[i].prev;
-                Node tempNode = strHash[hash];
-                while (tempNode.next != null && tempNode.next.idx < i) tempNode = tempNode.next;
-                nodes[i].next = tempNode.next;
-                tempNode.next = nodes[i];
-                nodes[i].prev = tempNode;
-                if (nodes[i].next != null) nodes[i].next.prev = nodes[i];
+        List<Integer> array = new LinkedList<>(map.get(hash_A));
+
+        // 문자열을 교체했을 때 영향을 받는 다른 idx 가
+        // hash_A 를 가지고 있었을 때 영향을 받은 후에도
+        // 계속해서 hash 값으로 hash_A 를 가지고 있는 지 확인한다.
+        // 가지고 있는 애만 map 에서 정보를 삭제한다.
+        for (int i : array) {
+
+            // 이전 단계에서 변경한 idx 의 + 2 보다 작아야 영향을 받는다.
+            // 상한만 검사하는 이유는 set 은 자동으로 오름차순으로 정렬하기 때문이다.
+            if (prev + 2 < i) {
+                boolean string_check = true;
+
+                // 문자열 비교
+                for (int j = 0; j < 3; j++)
+                    if (string[i + j] != string_A[j]) {
+                        string_check = false;
+                        break;
+                    }
+
+                // 문자열이 일치하는 경우
+                if (string_check) {
+
+                    // 문자열 할당
+                    for (int j = 0; j < 3; j++)
+                        string[i + j] = string_B[j];
+
+                    // change 한 idx map 에서 삭제
+                    map.get(hash_A).remove(i);
+
+                    // change 한 idx 개수 갱신
+                    ret++;
+
+                    // prev 갱신
+                    prev = i;
+                }
             }
         }
-        return cnt;
+
+        // hash_A 를 가져 문자열이 실제로 변경된 idx 만 array 에 남긴다.
+        array.removeAll(map.get(hash_A));
+
+        // tree clear
+        map.get(hash_A).clear();
+
+        for (int i : array) {
+            for (int j = -2; j < 3; j++) {
+
+                // string 범위 내에 드느지 check
+                if (i + j < 0 || i + j >= string.length - 2) continue;
+
+                // hash value cal
+                int hash = getHash(string, i + j);
+
+                // 해당 hash value map 에 저장
+                if (!map.containsKey(hash)) map.put(hash, new TreeSet<>());
+                map.get(hash).add(i + j);
+            }
+        }
+
+        return ret;
     }
 
     void result(char[] ret) {
-        System.arraycopy(str, 0, ret, 0, str.length);
+
+        System.arraycopy(string, 0, ret, 0, string.length);
     }
-}
 
-class Node {
-    int idx;
-    int hash;
-    Node prev;
-    Node next;
+    int getHash(char[] arr, int i) {
 
-    public Node(int idx, int hash, Node prev, Node next) {
-        this.idx = idx;
-        this.hash = hash;
-        this.prev = prev;
-        this.next = next;
+        return (arr[i] - 'a') * 26 * 26 + (arr[i + 1] - 'a') * 26 + (arr[i + 2] - 'a');
     }
 }

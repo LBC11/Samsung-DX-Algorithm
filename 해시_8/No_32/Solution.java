@@ -66,17 +66,14 @@ class Solution {
                 int user_ans = user.change(string_A, string_B);
                 int ans = sc.nextInt();
 
-                System.out.println("user_ans: "+user_ans+", ans: "+ans);
-
                 if (ans != user_ans)
                 {
                     score = 0;
                 }
-
-                System.out.println(score);
             }
 
             user.result(user_ans_string);
+
 
             sc.nextLine();
             String result_str_java = sc.nextLine();
@@ -84,7 +81,6 @@ class Solution {
 
             for (int i = 0; i < init_string_len; i++)
             {
-                System.out.println(i+"번쨰 "+"result_string: "+result_string[i] + " user_string: "+user_ans_string[i]);
                 if (result_string[i] != user_ans_string[i])
                 {
                     score = 0;
@@ -99,4 +95,5 @@ class Solution {
         System.out.println("Total score : " + total_score/T);
         sc.close();
     }
+
 }
