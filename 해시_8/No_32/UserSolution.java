@@ -58,7 +58,8 @@ void result(char ret[])
 그 뒤의 element 를 한칸씩 당기는데 이러한 과정에서 발생하는 시간이 O(n)이다.
 -> LinkedList 구현할 때 배웠던 건데 다시 한번 살펴보자
 2. 함수를 getHash 함수 호출할 때 기존의 string 을 사용하면 되는데 new 로 char[] 을 새로 선언하는 비효율성이 있었다.
-3.
+3. change function 에서 hash_A 를 가지는 idx 를 찾기 위하여 모든 s 를 순회하였던 것
+   -> HashMap 으로 해결
 
 
  */
