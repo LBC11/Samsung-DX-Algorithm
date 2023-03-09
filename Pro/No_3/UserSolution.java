@@ -212,6 +212,3 @@ class UserSolution {
         }
     }
 }
-
-
-
